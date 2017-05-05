@@ -1,12 +1,12 @@
 /** Android IP Camera 02
  *
- *  Author: Rob Landry
+ *  Author: Alan T
  * 
  *  URL: http://github.com/roblandry/android-ip-camera.device
  * 
- *  Date: 3/6/15
+ *  Date: 05/04/2017
  *  
- *  Version: 1.0.1
+ *  Version: 1.0.2
  * 
  *  Description: This is a custom device type. This works with the Android IP Camera app. It allows you to take photos, 
  *  record video, turn on/off the led, focus, overlay, and night vision. It displays various sensors including battery 
@@ -99,11 +99,22 @@ metadata {
 		valueTile("battery", "device.battery", decoration: "flat", width: 1, height: 1) {
 			state "battery", label:'${currentValue}% battery', unit:""
 		}
-		valueTile("light", "device.illuminance", decoration: "flat") {
-			state("light", label:'${currentValue} lux', unit:"${unit}")
+        
+		valueTile("mx", "device.illuminance", inactiveLabel: false, width: 1, height: 1, decoration: "flat", wordWrap: true) {
+			state "default", label:'Lux\n${currentValue}'
+		}
+
+		valueTile("mx", "device.mx", inactiveLabel: false, width: 1, height: 1, decoration: "flat", wordWrap: true) {
+			state "default", label:'M-x\n${currentValue}'
+		}
+		valueTile("my", "device.my", inactiveLabel: false, width: 1, height: 1, decoration: "flat", wordWrap: true) {
+			state "default", label:'M-y\n${currentValue}'
+		}
+		valueTile("mz", "device.mz", inactiveLabel: false, width: 1, height: 1, decoration: "flat", wordWrap: true) {
+			state "default", label:'M-z\n${currentValue}'
 		}
 		main "camera"
-		details(["cameraDetails","camera","take","record","led","focus","overlay","nightVision","battery"])
+		details(["cameraDetails","camera","take","record","led","focus","overlay","nightVision","battery","light","mx","my","mz"])
 	}
 }
 
@@ -253,8 +264,8 @@ def getSensors() {
 						theData = cToF(theData as Integer)
                     }
 					if (theSensor == "light") {
-						theSensor = "light"
-						theUnit = "lux"
+						theSensor = "illuminance"
+						theUnit = ""
 					}
 					
 					log.info "name: ${theSensor}, unit: ${theUnit}, value: ${theData as Integer}"
@@ -266,5 +277,3 @@ def getSensors() {
 	}
 	catch(e) { log.debug "$e" }
 }
-
-
